@@ -87,7 +87,7 @@ $this->middleware('auth', ['except'=> ['index','show']]);
      */
     public function destroy(Question $question)
     {
-        if(\Gate::allows('update-question', $question)){
+        if(\Gate::allows('delete-question', $question)){
             $question->delete();
             return redirect()->route('questions.index')->with('success', "Your question has been successfully deleted.");
             }

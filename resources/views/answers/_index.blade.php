@@ -19,25 +19,46 @@
                         <a title="This answer is not useful" class="vote-down off">
                             <i class="fas fa-caret-down fa-2x"></i>
                         </a>
-                        <a title="Mark this answer as best answer" class="vote-accepted">
+                    <a title="Mark this answer as best answer" class="{{$answer->status}}">
                             <i class="fas fa-check  fa-2x"></i>
                         </a>
                         
                 </div>
                     <div class="media-body">
                         {!! $answer->body_html !!}
-                        <div class="float-right">
-                            <div class="media">
-                                <a href="{{$answer->user->url}}" class="pr-2">
-                                    <img src="{{$answer->user->avatar}}">
-                                </a>
-                                <div class="media-body mt-1">
-                                    <a href="{{$answer->user->url}}">{{$answer->user->name}}</a>
-                                </div>
-                            </div>
-                            <span class="text-muted  mt-2"> Answered {{$answer->created_at}} </span>
+                        <div class="row">
+                            <div class="col-4">
+                        @can('update-answer', $answer)
+                                       
+                                   
+                        <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" class="btn btn-sm btn-outline-info">Edit</a>
+                        @endcan
+                        @can('delete-answer', $answer)
+                        <form class="form-delete ml-2" method="POST" action="{{route('questions.answers.destroy', [$question->id, $answer->id])}}">
+                         @method('DELETE')
+                         @csrf
+                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"> Delete </button>
 
+                        </form>
+                        @endcan
                         </div>
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <div class="float-right">
+                                <div class="media">
+                                    <a href="{{$answer->user->url}}" class="pr-2">
+                                        <img src="{{$answer->user->avatar}}">
+                                    </a>
+                                    <div class="media-body mt-1">
+                                        <a href="{{$answer->user->url}}">{{$answer->user->name}}</a>
+                                    </div>
+                                </div>
+                                <span class="text-muted  mt-2"> Answered {{$answer->created_at}} </span>
+    
+                            </div>
+                        </div>
+                        </div>
+                       
                     </div>
                 </div>
                 <hr>
