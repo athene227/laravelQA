@@ -19,6 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v5.12.0/js/all.js" data-auto-replace-svg></script>
 </head>
 <body>
     <div id="app">
