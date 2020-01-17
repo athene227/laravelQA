@@ -42,4 +42,16 @@ class Question extends Model
         $this->best_answer_id = $answer->id;
         $this->save();
     }
+    public function favourites(){
+        return $this->belongsToMany(User::class, 'favourites');
+    }
+    public function isFavourited(){
+        return $this->favourites->where('user_id',auth()->id())->count()>0;
+    }
+    public function getIsfavouritedAttribute(){
+        return $this->isFavourited();
+    }
+    public function getFavouritesCountAttribute(){
+        return $this->favourites->count();
+    }
 }
