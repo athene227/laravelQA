@@ -12,13 +12,13 @@ class Favourites extends Seeder
      */
     public function run()
     {
-       DB::table('favourite')->delete();
+       DB::table('favourites')->delete();
        $users = User::pluck('id')->all();
        $numberofUsers= count($users);
        foreach (Question::all() as $question){
            for($i=0; $i<rand(0,$numberofUsers); $i++){
                $user= $users[$i];
-               $question->favourite()->attach($user);
+               $question->favourites()->attach($user);
            }
        }
     }
