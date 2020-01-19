@@ -22,28 +22,36 @@
                          class="vote-up {{Auth::guest() ? 'off': ''}}"
                          onclick="event.preventDefault(); document.getElementById('up-vote-question-{{$question->id}}').submit();"
                          >
-                         <form hidden id="up-vote-question-{{ $question->id }}" action="/questions/{{$question->id}}/vote" method="POST">
-                            @csrf
-                            <input type="hidden" name='vote' value="1">
-                            </form>
-                                 
-
                             <i class="fas fa-caret-up  fa-2x"></i>
                                 </a>
+                                <form hidden id="up-vote-question-{{ $question->id }}" action="/questions/{{$question->id}}/vote" method="POST">
+                                    @csrf
+                                    <input type="hidden" name='vote' value="1">
+                                    </form>
                             <span class="votes-count">{{$question->votes_count}}</span>
                                 <a title="This question is not useful" class="vote-down  {{Auth::guest() ? 'off': ''}}"
                                 onclick="event.preventDefault(); document.getElementById('down-vote-question-{{$question->id}}').submit();"
                          >
-                         <form hidden id="down-vote-question-{{ $question->id }}" action="/questions/{{$question->id}}/vote" method="POST">
-                            @csrf
-                            <input type="hidden" name='vote' value="-1">
-                            </form>
+                        
                                 <i class="fas fa-caret-down fa-2x"></i>
                                 </a>
-                                <a title="Click to mark as favourite question" class="favourite favourited">
+                                <form hidden id="down-vote-question-{{ $question->id }}" action="/questions/{{$question->id}}/vote" method="POST">
+                                    @csrf
+                                    <input type="hidden" name='vote' value="-1">
+                                    </form>
+                                <a title="Click to mark as favourite question" 
+                                class="favourite {{Auth::guest() ? 'off': ($question->is_favourited ? 'favourited': '')}}"
+                                onclick="event.preventDefault(); document.getElementById('favourite-question-{{$question->id}}').submit();"
+                                >
                                     <i class="fas fa-star  fa-2x"></i>
                                 </a>
-                                <span class="favourites-count ">123</span>
+                                <form hidden id="favourite-question-{{ $question->id }}" action="/questions/{{$question->id}}/favourites" method="POST">
+                                    @csrf
+                                    @if($question->is_favourited)
+                                    @method('DELETE')
+                                    @endif
+                                    </form>
+                                <span class="favourites-count ">{{$question->favourites_count}}</span>
                         </div>
                         <div class="media-body">
                             {!! $question->body_html !!}
