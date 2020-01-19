@@ -58,7 +58,7 @@ class Question extends Model
     public function votes(){
         return $this->morphToMany(User::class, 'Votable');
     }
-    public function upVotes(){
+    public function upVotes(){ 
         return $this->votes()->wherePivot('vote',1);
     }
     
