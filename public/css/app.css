@@ -11434,3 +11434,13 @@ strong {
   color: #38c172;
 }
 
+.answer-container,
+.question-container {
+  padding: 20px 0;
+}
+
+.answer-container:not(:last-child),
+.question-container:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
