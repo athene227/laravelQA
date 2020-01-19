@@ -9,82 +9,45 @@
                 <hr>
                 @include('layouts._message')
                 @foreach ($answers as $answer)
-             
+
                 <div class="media">
-                    <div class="d-flex flex-column vote-controls">
-                        <a title="This answer is useful"
-                        class="vote-up {{Auth::guest() ? 'off': ''}}"
-                        onclick="event.preventDefault(); document.getElementById('up-vote-answer-{{$answer->id}}').submit();"
-                        >
-                           <i class="fas fa-caret-up  fa-2x"></i>
-                               </a>
-                               <form hidden id="up-vote-answer-{{ $answer->id }}" action="/answers/{{$answer->id}}/vote" method="POST">
-                                   @csrf
-                                   <input type="hidden" name='vote' value="1">
-                                   </form>
-                           <span class="votes-count">{{$answer->votes_count}}</span>
-                               <a title="This answer is not useful" class="vote-down  {{Auth::guest() ? 'off': ''}}"
-                               onclick="event.preventDefault(); document.getElementById('down-vote-answer-{{$answer->id}}').submit();"
-                        >
-                       
-                               <i class="fas fa-caret-down fa-2x"></i>
-                               </a>
-                               <form hidden id="down-vote-answer-{{ $answer->id }}" action="/answers/{{$answer->id}}/vote" method="POST">
-                                   @csrf
-                                   <input type="hidden" name='vote' value="-1">
-                                   </form>
-                        @can('accept-answer',$answer)
-                    <a title="Mark this answer as best answer" class="{{$answer->status}}"
-                        onclick="event.preventDefault(); document.getElementById('accept-answer-{{$answer->id}}').submit();"
-                        >
-                            <i class="fas fa-check  fa-2x"></i>
-                        </a>
-                    <form hidden id="accept-answer-{{ $answer->id }}" action="{{ route('answers.accept', [$answer->id]) }}" method="POST">
-                    @csrf
-                    </form>
-                    @else
-                    @if($answer->is_best)
-                    <a title="The question owner marked this as best answer" class="{{$answer->status}}">
-                            <i class="fas fa-check  fa-2x"></i>
-                        </a>
-                    @endif
-                    @endcan
-                </div>
+                    @include('shared._vote',[
+                    'model'=>$answer
+                    ])
                     <div class="media-body">
                         {!! $answer->body_html !!}
                         <div class="row">
                             <div class="col-4">
-                        @can('update-answer', $answer)
-                                       
-                                   
-                        <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endcan
-                        @can('delete-answer', $answer)
-                        <form class="form-delete ml-2" method="POST" action="{{route('questions.answers.destroy', [$question->id, $answer->id])}}">
-                         @method('DELETE')
-                         @csrf
-                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"> Delete </button>
+                                @can('update-answer', $answer)
 
-                        </form>
-                        @endcan
-                        </div>
-                        <div class="col-4"></div>
-                        <div class="col-4">
-                            <div class="float-right">
-                                <div class="media">
-                                    <a href="{{$answer->user->url}}" class="pr-2">
-                                        <img src="{{$answer->user->avatar}}">
-                                    </a>
-                                    <div class="media-body mt-1">
-                                        <a href="{{$answer->user->url}}">{{$answer->user->name}}</a>
-                                    </div>
+
+                                <a href="{{ route('questions.answers.edit', [$question->id, $answer->id]) }}"
+                                    class="btn btn-sm btn-outline-info">Edit</a>
+                                @endcan
+                                @can('delete-answer', $answer)
+                                <form class="form-delete ml-2" method="POST"
+                                    action="{{route('questions.answers.destroy', [$question->id, $answer->id])}}">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Are you sure?')"> Delete </button>
+
+                                </form>
+                                @endcan
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <div class="float-right">
+                                    @include('shared._author',
+                                    [
+                                    'model'=>$answer,
+                                    'label'=>'answered'
+                                    ])
+
                                 </div>
-                                <span class="text-muted  mt-2"> Answered {{$answer->created_at}} </span>
-    
                             </div>
                         </div>
-                        </div>
-                       
+
                     </div>
                 </div>
                 <hr>
