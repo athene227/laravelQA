@@ -47,4 +47,9 @@
     </a>
     @endif
     @endcan
+    @if ($model instanceof App\Question)
+        @include ('shared._favourite', [
+            'model' => $model
+        ])
+        @endif
 </div>
